@@ -114,3 +114,8 @@ loadUsers(true);
 window.setInterval(() => {
   if (!document.hidden) loadUsers();
 }, refreshIntervalMs);
+
+const cors = require("cors");
+
+app.use(cors({ origin: "https://codepavanjaiswal.github.io" }));
+app.use(express.json());
