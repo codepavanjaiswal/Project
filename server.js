@@ -18,6 +18,25 @@ if (!mongoUri) {
 
 const client = new MongoClient(mongoUri);
 
+const allowedOrigins = new Set([
+  "http://localhost:5500",
+  "http://127.0.0.1:5500",
+  "https://codepavanjaiswal.github.io"
+]);
+
+app.use((req, res, next) => {
+  const origin = req.get("Origin");
+  if (!allowedOrigins.has(origin)) return next();
+
+  res.set("Access-Control-Allow-Origin", origin);
+  res.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+  res.vary("Origin");
+
+  if (req.method === "OPTIONS") return res.sendStatus(204);
+  next();
+});
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
