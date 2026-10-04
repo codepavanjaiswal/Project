@@ -2,29 +2,46 @@ const form = document.getElementById("userForm");
 const usersContainer = document.getElementById("users");
 const message = document.getElementById("message");
 const refreshBtn = document.getElementById("refreshBtn");
+const refreshIntervalMs = 3000;
+let isLoadingUsers = false;
+let lastRenderedUsers = null;
 
-async function loadUsers() {
-  usersContainer.textContent = "Loading...";
+async function loadUsers(showLoading = false) {
+  if (isLoadingUsers) return;
+  isLoadingUsers = true;
+
+  if (showLoading && lastRenderedUsers === null) {
+    usersContainer.textContent = "Loading...";
+  }
 
   try {
-    const response = await fetch("/api/users");
+    const response = await fetch("/api/users", { cache: "no-store" });
     const data = await readJsonResponse(response, "Failed to load users");
+    const serializedUsers = JSON.stringify(data);
 
-    if (data.length === 0) {
-      usersContainer.textContent = "No users saved yet.";
-      return;
+    if (serializedUsers !== lastRenderedUsers) {
+      lastRenderedUsers = serializedUsers;
+
+      if (data.length === 0) {
+        usersContainer.textContent = "No users saved yet.";
+        return;
+      }
+
+      usersContainer.innerHTML = data.map(user => `
+        <div class="user">
+          <strong>${escapeHtml(user.name)}</strong>
+          <span>${escapeHtml(user.email)}</span>
+          <br>
+          <small>${new Date(user.createdAt).toLocaleString()}</small>
+        </div>
+      `).join("");
     }
-
-    usersContainer.innerHTML = data.map(user => `
-      <div class="user">
-        <strong>${escapeHtml(user.name)}</strong>
-        <span>${escapeHtml(user.email)}</span>
-        <br>
-        <small>${new Date(user.createdAt).toLocaleString()}</small>
-      </div>
-    `).join("");
   } catch (error) {
-    usersContainer.textContent = error.message;
+    if (lastRenderedUsers === null) {
+      usersContainer.textContent = error.message;
+    }
+  } finally {
+    isLoadingUsers = false;
   }
 }
 
@@ -53,7 +70,7 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
-refreshBtn.addEventListener("click", loadUsers);
+refreshBtn.addEventListener("click", () => loadUsers(true));
 
 async function readJsonResponse(response, fallbackMessage) {
   const body = await response.text();
@@ -82,4 +99,7 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-loadUsers();
+loadUsers(true);
+window.setInterval(() => {
+  if (!document.hidden) loadUsers();
+}, refreshIntervalMs);
