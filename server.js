@@ -42,6 +42,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 let users;
 
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
+});
+
 async function startServer() {
   await client.connect();
 
