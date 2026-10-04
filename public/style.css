@@ -1,0 +1,97 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.container {
+  width: min(900px, 92%);
+  margin: 50px auto;
+  display: grid;
+  gap: 24px;
+}
+
+.card {
+  background: white;
+  padding: 28px;
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+h1, h2 {
+  margin-top: 0;
+}
+
+.subtitle {
+  color: #6b7280;
+}
+
+form {
+  display: grid;
+  gap: 10px;
+}
+
+label {
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+button {
+  border: 0;
+  border-radius: 8px;
+  padding: 12px 18px;
+  background: #2563eb;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+button.secondary {
+  background: #4b5563;
+  margin: 0;
+}
+
+.message {
+  min-height: 22px;
+  font-weight: 600;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user {
+  border: 1px solid #e5e7eb;
+  padding: 14px;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.user strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.user small {
+  color: #6b7280;
+}

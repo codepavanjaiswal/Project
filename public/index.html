@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTML + MongoDB</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <section class="card">
+      <h1>MongoDB User Manager</h1>
+      <p class="subtitle">HTML frontend connected to MongoDB through Node.js + Express.</p>
+
+      <form id="userForm">
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text" placeholder="Enter name" required />
+
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="Enter email" required />
+
+        <button type="submit">Save to MongoDB</button>
+      </form>
+
+      <p id="message" class="message"></p>
+    </section>
+
+    <section class="card">
+      <div class="list-header">
+        <h2>Saved Users</h2>
+        <button id="refreshBtn" class="secondary">Refresh</button>
+      </div>
+      <div id="users" class="users">Loading...</div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
